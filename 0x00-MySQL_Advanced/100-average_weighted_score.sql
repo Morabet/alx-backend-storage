@@ -28,6 +28,6 @@ BEGIN
     
     -- Return the computed weighted score
     -- SELECT weighted_score AS Message;
-END //
+END//
 
 DELIMITER ;
