@@ -25,7 +25,7 @@ BEGIN
     UPDATE users SET average_score = weighted_score WHERE id = user_id;
     
     -- Return the computed weighted score
-    SELECT weighted_score AS Message;
+    -- SELECT weighted_score AS Message;
 END //
 
 DELIMITER ;
