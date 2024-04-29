@@ -8,10 +8,11 @@ nginx_collection = client.logs.nginx
 
 methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
 
-print(f"{nginx_collection.count_documents({})} logs")
+print("{} logs".format(nginx_collection.count_documents({})))
 print("Methods:")
 for method in methods:
-    print(f"\t method {method}: \
-{nginx_collection.count_documents({'method': method})}")
+    print("\t method {}: {} \
+    " .format(method, nginx_collection.count_documents({'method': method})))
 
-print(f"{nginx_collection.count_documents({'path': '/status'})} status check")
+print("{} status check \
+    ".format(nginx_collection.count_documents({'path': '/status'})))
