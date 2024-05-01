@@ -22,13 +22,3 @@ def get_page(url: str) -> str:
     html_content = res.text
     r.setex(url, 10, html_content)
     return html_content
-
-
-if __name__ == "__main__":
-    url = "http://slowwly.robertomurray.co.uk"
-    response = get_page(url)
-    print(response)
-
-    # getting the cached url counter
-    value = "count:{}{}{}".format('{', url, '}')
-    print(r.get(value))
