@@ -36,8 +36,9 @@ def call_history(method: Callable) -> Callable:
 
 def replay(method: Callable) -> None:
     """Display the history of calls of a particular function"""
+    r = redis.Redis()
     function_name = method.__qualname__
-    value = redis.Redis().get(function_name)
+    value = r.get(function_name)
     try:
         value = int(value.decode('utf-8'))
     except Exception:
@@ -47,14 +48,14 @@ def replay(method: Callable) -> None:
     out_key = '{}:outputs'.format(function_name)
     # Retrieve input and output lists from Redis
 
-    inputs = Cache._redis.lrange(in_key, 0, -1)
-    outputs = Cache._redis.lrange(out_key, 0, -1)
+    inputs = r.lrange(in_key, 0, -1)
+    outputs = r.lrange(out_key, 0, -1)
 
     print(f"{function_name} was called {value} times:")
 
     for in_arg, output in zip(inputs, outputs):
         print("{}(*{}) -> {}".format(
-            method.__qualname__,
+            function_name,
             in_arg.decode('utf-8'),
             output.decode('utf-8')
             ))
