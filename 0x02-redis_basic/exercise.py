@@ -34,7 +34,7 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(method: Callable):
+def replay(method: Callable) -> None:
     """Display the history of calls of a particular function"""
     # Create input and output list keys
     in_key = '{}:inputs'.format(method.__qualname__)
@@ -57,16 +57,16 @@ def replay(method: Callable):
 class Cache():
     """"Represents an object for storing data in a Redis data storage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initializes a Cache instance"""
         self._redis = redis.Redis()
-        self._redis.flushdb()
+        self._redis.flushdb(True)
 
     @call_history
     @count_calls
-    def store(self, data: str | bytes | int | float) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores a value in a Redis data storage and returns the key"""
-        random_key = str(uuid.uuid4)
+        random_key = str(uuid.uuid4())
         self._redis.set(random_key, data)
         return random_key
 
