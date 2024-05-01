@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+"""Implementing an expiring web cache and tracker"""
+
+import redis
+import requests
+
+r = redis.Redis()
+
+
+def get_page(url: str) -> str:
+    """
+    function uses the requests module to obtain the HTML content
+    of a particular URL and returns it.
+    """
+
+    value = "count:{}{}{}".format('{', url, '}')
+    r.incr(value)
+    res = requests.get(url)
+    html_content = res.text
+    r.setex(url, 10, html_content)
+    return html_content
+
+
+if __name__ == "__main__":
+    url = "http://slowwly.robertomurray.co.uk"
+    response = get_page(url)
+    print(response)
+
+    # getting the cached url counter
+    value = "count:{}{}{}".format('{', url, '}')
+    print(r.get(value))
