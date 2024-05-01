@@ -15,6 +15,9 @@ def get_page(url: str) -> str:
 
     value = "count:{}{}{}".format('{', url, '}')
     r.incr(value)
+    cached_content = r.get(url)
+    if cached_content:
+        return cached_content.decode('utf-8')
     res = requests.get(url)
     html_content = res.text
     r.setex(url, 10, html_content)
